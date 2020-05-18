@@ -7,8 +7,8 @@ This repository is used to host the open-source P4 implementations of our resear
 - [PRECISION-tofino](PRECISION-tofino/): The PRECISION heavy-hitter algorithm on Tofino switch
 
 
-## Related projects
-- [PRECISION](https://github.com/p4lang/p4-applications/tree/master/research_projects/PRECISION): The PRECISION heavy-hitter algorithm on BMV2 model
+## Related repositories
+- [PRECISION](https://github.com/p4lang/p4-applications/tree/master/research_projects/PRECISION): The PRECISION heavy-hitter algorithm on BMV2 model (hosted at P4 Apps WG)
 
 ## License
 
