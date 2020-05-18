@@ -25,6 +25,11 @@ If you find this PRECISION implementation or the discussions in our paper useful
         publisher={IEEE}
     }
 
+Authors of the PRECISION algorithm:
+- Ran Ben Basat, Harvard University
+- Xiaoqi Chen, Princeton University
+- Gil Einziger, Ben Gurion University
+- Ori Rottenstreich, Technion
 
 ### License
 
