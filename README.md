@@ -2,7 +2,11 @@
 
 This repository is used to host the open-source P4 implementations of our research projects. 
 
-## License
-Copyright Princeton Cabernet research group, all rights reserved.
+## Projects
+- [AES](AES.p4app/): AES cryptography on BMV2 switch
+- [PRECISION-tofino](PRECISION-tofino/): The PRECISION heavy-hitter algorithm on Tofino switch
 
-Please refer to individual project sub-folders for open-source licensing agreements
+
+## License
+
+Please refer to individual project sub-folders for open-source licensing agreements.
