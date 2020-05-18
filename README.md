@@ -1,11 +1,8 @@
-# p4-projects
+# Open source P4 implementations
 
-This repo will be used to host several open-source P4 projects, implementing common and not-so-common algorithms and functionalities.
-
-Feel free to open an issue if you have any question.
+This repository is used to host the open-source P4 implementations of our research projects. 
 
 ## License
+Copyright Princeton Cabernet research group, all rights reserved.
 
-Copyright 2019 Xiaoqi Chen, Princeton University.
-
-Licensed under [GNU AGPLv3](https://github.com/chenxiaoqino/p4-projects/blob/master/LICENSE).
+Please refer to individual project sub-folders for open-source licensing agreements
