@@ -341,12 +341,8 @@ control SwitchIngress(
         action copy_flow_id_unknown(){
             ig_md.flow_id_part_3=0;
         }
-        
-        @stage(0)
         _OAT(copy_flow_id_common_1_)
-        @stage(0)
         _OAT(copy_flow_id_common_2_)
-        @stage(0)
         _OAT(copy_flow_id_common_3_)
             
 // == Calculate array indices for array access
@@ -380,9 +376,6 @@ control SwitchIngress(
                 ig_md.flow_id_part_4
             });
         }
-        
-        
-        @stage(1)
         _OAT(get_hashed_locations_1_)
         //this can be later...
         _OAT(get_hashed_locations_2_)
@@ -447,39 +440,21 @@ control SwitchIngress(
         RegAct_FlowID(2,3)
         RegAct_FlowID(2,4)
         
-        @stage(2)
         _OAT(exec_stage_1_fid_match_1_)
-        @stage(2)
         _OAT(exec_stage_1_fid_write_1_)
-        @stage(2)
         _OAT(exec_stage_1_fid_match_2_)
-        @stage(2)
         _OAT(exec_stage_1_fid_write_2_)
-        @stage(3)
         _OAT(exec_stage_1_fid_match_3_)
-        @stage(3)
         _OAT(exec_stage_1_fid_write_3_)
-        @stage(3)
         _OAT(exec_stage_1_fid_match_4_)
-        @stage(3)
         _OAT(exec_stage_1_fid_write_4_)
-        
-        
-        @stage(4)
         _OAT(exec_stage_2_fid_match_1_)
-        @stage(4)
         _OAT(exec_stage_2_fid_write_1_)
-        @stage(4)
         _OAT(exec_stage_2_fid_match_2_)
-        @stage(4)
         _OAT(exec_stage_2_fid_write_2_)
-        @stage(5)
         _OAT(exec_stage_2_fid_match_3_)
-        @stage(5)
         _OAT(exec_stage_2_fid_write_3_)
-        @stage(5)
         _OAT(exec_stage_2_fid_match_4_)
-        @stage(5)
         _OAT(exec_stage_2_fid_write_4_)
         
         
@@ -489,11 +464,7 @@ control SwitchIngress(
         action set_matched_at_stage_2_(){
             ig_md.matched_at_stage_2=true;
         }
-        
-        @stage(6)
         _OAT(set_matched_at_stage_1_)
-        
-        @stage(6)
         _OAT(set_matched_at_stage_2_)
         
         // Define stateful actions for matching flow ID
@@ -521,12 +492,8 @@ control SwitchIngress(
         
         RegAct_Counter(1)
         RegAct_Counter(2)
-        
-        @stage(7)
         _OAT(exec_stage_1_counter_read)
         _OAT(exec_stage_1_counter_incr)
-        
-        @stage(7)
         _OAT(exec_stage_2_counter_read)
         _OAT(exec_stage_2_counter_incr)
 
@@ -540,10 +507,7 @@ control SwitchIngress(
         action get_randomness_2_(){
             ig_md.entropy_short=rng2.get();
         }
-        
-        @stage(8)
         _OAT(get_randomness_1_)
-        @stage(8)
         _OAT(get_randomness_2_)
         
         // Find out which stage has the minimum count.
@@ -568,7 +532,6 @@ control SwitchIngress(
         action exec_get_min_stage() {
             ig_md.resubmit_data_write.min_stage=(bit<8>) get_min_stage.execute(0);
         }
-        @stage(9)
         _OAT(exec_get_min_stage)
         
         action clear_resubmit_flag(){
