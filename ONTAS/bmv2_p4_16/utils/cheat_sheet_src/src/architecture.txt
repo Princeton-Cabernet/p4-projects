@@ -1,0 +1,46 @@
+// common externs
+extern void truncate(in bit<32> length);
+extern void resubmit<T>(in T x);
+extern void recirculate<T>(in T x);
+enum CloneType { I2E, E2I }
+extern void clone(in CloneType type, 
+                  in bit<32> session);
+
+// v1model pipeline elements
+parser Parser<H, M>(
+  packet_in pkt,
+  out H hdr,
+  inout M meta,
+  inout standard_metadata_t std_meta
+);
+control VerifyChecksum<H, M>(
+  inout H hdr,
+  inout M meta
+);
+control Ingress<H, M>(
+  inout H hdr,
+  inout M meta,
+  inout standard_metadata_t std_meta
+);
+control Egress<H, M>(
+  inout H hdr,
+  inout M meta,
+  inout standard_metadata_t std_meta
+);                      
+control ComputeChecksum<H, M>(
+  inout H hdr,
+  inout M meta
+);
+control Deparser<H>(
+  packet_out b, in H hdr
+);
+
+// v1model switch
+package V1Switch<H, M>(
+  Parser<H, M> p,
+  VerifyChecksum<H, M> vr,
+  Ingress<H, M> ig,
+  Egress<H, M> eg,
+  ComputeChecksum<H, M> ck,
+  Deparser<H> d
+);

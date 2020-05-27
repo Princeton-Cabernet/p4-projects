@@ -1,0 +1,21 @@
+// header stack declaration
+header label_t {
+  bit<20> label;
+  bit bos;
+}
+struct header_t {
+  label_t[10] labels;
+}
+header_t hdr;
+
+// remove from header stack
+action pop_label() {
+  hdr.labels.pop_front(1);
+}
+
+// add to header stack
+action push_label(in bit<20> label) {
+  hdr.labels.push_front(1);
+  hdr.labels[0].setValid();
+  hdr.labels[0] = { label, 0};
+}

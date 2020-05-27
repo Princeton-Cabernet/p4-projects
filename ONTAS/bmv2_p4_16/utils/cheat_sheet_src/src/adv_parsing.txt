@@ -1,0 +1,23 @@
+// common defns for IPv4 and IPv6
+header ip46_t {
+  bit<4> version;
+  bit<4> reserved;
+}
+
+// header stack parsing
+state parse_labels {
+  packet.extract(hdr.labels.next);
+  transition select(hdr.labels.last.bos) {
+    0: parse_labels; // create loop
+    1: guess_labels_payload;
+  }
+}
+
+// lookahead parsing
+state guess_labels_payload {
+  transition select(packet.lookahead<ip46_t>().version) {
+    4 : parse_inner_ipv4;
+    6 : parse_inner_ipv6;
+    default : parse_inner_ethernet;
+  }
+}

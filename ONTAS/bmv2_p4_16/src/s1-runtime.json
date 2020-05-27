@@ -1,0 +1,145 @@
+{
+  "target": "bmv2",
+  "p4info": "build/p4anony.p4.p4info.txt",
+  "bmv2_json": "build/p4anony.json",
+  "table_entries": [
+    {
+      "table": "OntasIngress.anony_mac_src_oui_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.nop_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.anony_mac_src_id_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.hash_mac_src_id_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.anony_mac_dst_oui_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.nop_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.anony_mac_dst_id_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.hash_mac_dst_id_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.anony_arp_mac_src_oui_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.nop_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.anony_arp_mac_src_id_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.hash_arp_mac_src_id_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.anony_arp_mac_dst_oui_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.nop_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.anony_arp_mac_dst_id_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.hash_arp_mac_dst_id_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.anony_srcip_tb",
+      "match": {
+        "meta.ipv4_srcip": ["72.14.213.0", "255.255.255.0"]
+      },
+      "action_name": "OntasIngress.prepare_srcip_hash_action",
+      "action_params": {
+          "mask1": 4294967040,
+          "mask2": 255
+      },
+      "priority": 1
+    },
+    {
+      "table": "OntasIngress.anony_dstip_tb",
+      "match": {
+        "meta.ipv4_dstip": ["72.14.213.0", "255.255.255.0"]
+      },
+      "action_name": "OntasIngress.prepare_dstip_hash_action",
+      "action_params": { 
+          "mask1": 4294967040,
+          "mask2": 255
+      },
+      "priority": 1
+    },
+    {
+      "table": "OntasIngress.hashing_src24_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.hash_and_modify_src24_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.hashing_dst24_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.hash_and_modify_dst24_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.multicast_mac_catch_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.multicast_mac_catch_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.arp_ip_overwrite_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.arp_ip_overwrite_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.ipv4_ip_overwite_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.ip_overwrite_action",
+      "action_params": { }
+    },
+    {
+      "table": "OntasIngress.forward_tb",
+      "match": {
+        "standard_metadata.ingress_port": [1]
+      },
+      "action_name": "OntasIngress.set_egr_action",
+      "action_params": { 
+        "egress_spec" : 2
+      }
+    }
+  ]
+}

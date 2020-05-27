@@ -1,0 +1,15 @@
+apply {
+  // branch on header validity
+  if (hdr.ipv4.isValid()) {
+    ipv4_lpm.apply();
+  }
+  // branch on table hit result
+  if (local_ip_table.apply().hit) {
+    send_to_cpu();
+  }
+  // branch on table action invocation
+  switch (table1.apply().action_run) {
+    action1: { table2.apply(); }
+    action2: { table3.apply(); }
+  }
+}

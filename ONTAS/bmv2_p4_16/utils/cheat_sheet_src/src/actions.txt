@@ -1,0 +1,28 @@
+// Inputs provided by control-plane
+action set_next_hop(bit<32> next_hop) {
+  if (next_hop == 0) {
+    metadata.next_hop = hdr.ipv4.dst;
+  } else {
+    metadata.next_hop = next_hop;
+  }
+}
+
+// Inputs provided by data-plane
+action swap_mac(inout bit<48> x,
+                inout bit<48> y) {
+  bit<48> tmp = x;
+  x = y;
+  y = tmp;
+}
+
+// Inputs provided by control/data-plane
+action forward(in bit<9> p, bit<48> d) {
+  standard_metadata.egress_spec = p;
+  headers.ethernet.dstAddr = d;
+}
+
+// Remove header from packet
+action decap_ip_ip() {
+    hdr.ipv4 = hdr.inner_ipv4;
+    hdr.inner_ipv4.setInvalid();
+}

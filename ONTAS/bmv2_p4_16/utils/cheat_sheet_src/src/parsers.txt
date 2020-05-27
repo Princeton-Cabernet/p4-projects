@@ -1,0 +1,22 @@
+// packet_in: extern for input packet
+extern packet_in {
+  void extract<T>(out T hdr);
+  void extract<T>(out T hdr,in bit<32> n);
+  T lookahead<T>();
+  void advance(in bit<32> n);
+  bit<32> length();
+}
+
+// parser: begins in special "start" state
+state start {
+  transition parse_ethernet;
+}
+
+// User-defined parser state
+state parse_ethernet {
+  packet.extract(hdr.ethernet);
+  transition select(hdr.ethernet.type) {
+    0x800: parse_ipv4;
+    default: accept;
+  }
+}

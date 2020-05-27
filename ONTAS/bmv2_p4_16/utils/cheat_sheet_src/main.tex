@@ -1,0 +1,220 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% P4 Cheat Sheet
+%
+% By P4.org
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+\usepackage{fontspec} 
+\setmainfont{Utopia}
+\setsansfont{Free Helvetian}
+\setmonofont{Liberation Mono}
+
+\usepackage[landscape]{geometry}
+\usepackage{url}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+\usetikzlibrary{decorations.pathmorphing}
+\usepackage{amsmath,amssymb}
+
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+
+% Define Colors
+\usepackage{color}
+\definecolor{eclipseBlue}{RGB}{42,0.0,255}
+\definecolor{eclipseGreen}{RGB}{63,127,95}
+\definecolor{eclipsePurple}{RGB}{127,0,85}
+
+\usepackage{listings}
+
+% Define Language
+\lstdefinelanguage{p4}
+{
+  % list of keywords
+  morekeywords={
+    action, apply, bit, bool, const, control, default, else, enum, error, extern, exit, false, header, if, in, inout, int, match_kind, package, parser, out, return, select, state, struct, switch, table, transition, true, tuple, typedef, varbit, verify, void,
+  },
+  sensitive=true, % keywords are case-sensitive
+  morecomment=[l]{//}, % l is for line comment
+  morecomment=[s]{/*}{*/}, % s is for start and end delimiter
+  morestring=[b]" % defines that strings are enclosed in double quotes
+}
+
+% Set Language
+\lstset{
+  language={p4},
+  basicstyle=\small\ttfamily, % Global Code Style
+  captionpos=b, % Position of the Caption (t for top, b for bottom)
+  extendedchars=true, % Allows 256 instead of 128 ASCII characters
+  tabsize=2, % number of spaces indented when discovering a tab 
+  columns=fixed, % make all characters equal width
+  keepspaces=true, % does not ignore spaces to fit width, convert tabs to spaces
+  showstringspaces=false, % lets spaces in strings appear as real spaces
+  breaklines=true, % wrap lines if they don't fit
+  commentstyle=\color{eclipseBlue}, % style of comments
+  keywordstyle=\color{eclipsePurple}, % style of keywords
+  stringstyle=\color{eclipseGreen}, % style of strings
+}
+
+\title{P4 Cheat Sheet}
+\usepackage[brazilian]{babel}
+
+\advance\topmargin-.8in
+\advance\textheight3in
+\advance\textwidth3in
+\advance\oddsidemargin-1.5in
+\advance\evensidemargin-1.5in
+\parindent0pt
+\parskip2pt
+\newcommand{\hr}{\centerline{\rule{3.5in}{1pt}}}
+%\colorbox[HTML]{e4e4e4}{\makebox[\textwidth-2\fboxsep][l]{texto}
+\begin{document}
+
+\begin{center}{\huge{\bf \textsf{P4 Language Cheat Sheet}}}\\[.5em]
+%{\large By P4.org}
+\end{center}
+\begin{multicols*}{3}
+
+\tikzstyle{mybox} = [draw=black, fill=white, very thick,
+    rectangle, rounded corners, inner sep=10pt, inner ysep=10pt]
+\tikzstyle{fancytitle} =[fill=black, text=white, font=\bfseries]
+\tikzstyle{mybox2} = [draw=black, fill=white, very thick, rectangle split,
+    rectangle split parts=2, 
+    rounded corners, inner sep=10pt, inner ysep=10pt]
+\tikzstyle{fancytitle2} =[fill=black, text=white, font=\bfseries]
+
+%------------ DATA TYPES ---------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+        \lstinputlisting{src/data_types.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Basic Data Types};
+\end{tikzpicture}
+
+%------------ P4 Parsing ---------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+        \lstinputlisting{src/parsers.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Parsing};
+\end{tikzpicture}
+
+%------------ Expressions ---------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+        \lstinputlisting{src/expressions.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Statements \& Expressions};
+\end{tikzpicture}
+
+%------------ Actions ---------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+		\lstinputlisting{src/actions.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Actions};
+\end{tikzpicture}
+
+%------------ Tables ---------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+        \lstinputlisting{src/tables.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Tables};
+\end{tikzpicture}
+
+%------------ Control Flow ---------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+        \lstinputlisting{src/control_flow.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Control Flow};
+\end{tikzpicture}
+
+%------------ Deparsing ---------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+	    \lstinputlisting{src/deparsing.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Deparsing};
+\end{tikzpicture}
+
+%------------ Header Stacks ---------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+	    \lstinputlisting{src/header_stack.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Header Stacks};
+\end{tikzpicture}
+
+%------------ Advanced Parsing ---------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+	    \lstinputlisting{src/adv_parsing.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Advanced Parsing};
+\end{tikzpicture}
+
+%------------ V1Model - Architecture ---------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+        \lstinputlisting{src/architecture.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {V1Model - Architecture};
+\end{tikzpicture}
+
+%------------ V1Model - Standard Metadata ---------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+		\lstinputlisting{src/v1model_std_metadata.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {V1Model - Standard Metadata};
+\end{tikzpicture}
+
+%------------ V1Model - Counter Externs ---------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+        \lstinputlisting{src/counters.txt}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {V1Model - Counters \& Registers};
+\end{tikzpicture}
+
+
+
+\end{multicols*}
+\end{document}
+Contact GitHub API Training Shop Blog About
+© 2016 GitHub, Inc. Terms Privacy Security Status Help

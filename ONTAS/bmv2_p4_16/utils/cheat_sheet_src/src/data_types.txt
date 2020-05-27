@@ -1,0 +1,22 @@
+// typedef: introduces alternate type name
+typedef bit<48> macAddr_t;
+typedef bit<32> ip4Addr_t;
+
+// headers: ordered collection of members
+// operations test and set validity bits:
+// isValid(), setValid(), setInvalid()
+header ethernet_t {
+  macAddr_t dstAddr;
+  macAddr_t srcAddr;
+  bit<16> type;
+}
+
+// variable declaration and member access
+ethernet_t ethernet;
+macAddr_t src = ethernet.srcAddr;
+
+// struct: unordered collection of members
+struct headers_t {
+  ethernet_t ethernet;
+}
+

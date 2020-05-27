@@ -1,0 +1,19 @@
+// counters
+counter(8192, CounterType.packets) c;
+
+action count(bit<32> index) {
+    //increment counter at index
+    c.count(index);
+}
+
+// registers
+register<bit<48>>(16384) r;
+
+action ipg(out bit<48> ival, bit<32> x) {
+  bit<48> last;
+  bit<48> now;
+  r.read(last, x);
+  now = std_meta.ingress_global_timestamp;
+  ival = now - last;
+  r.write(x, now);
+}

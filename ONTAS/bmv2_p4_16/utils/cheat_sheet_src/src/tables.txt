@@ -1,0 +1,16 @@
+table ipv4_lpm {
+  key = {
+    hdr.ipv4.dstAddr : lpm;
+    // standard match kinds: 
+    // exact, ternary, lpm
+  }
+  // actions that can be invoked
+  actions = {
+    ipv4_forward;
+    drop;
+    NoAction;
+  }
+  // table properties
+  size = 1024;
+  default_action = NoAction();
+}

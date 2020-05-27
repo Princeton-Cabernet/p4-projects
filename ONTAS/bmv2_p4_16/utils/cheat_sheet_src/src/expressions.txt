@@ -1,0 +1,13 @@
+// Local metadata declaration, assignment
+bit<16> tmp1; bit<16> tmp2;
+tmp1 = hdr.ethernet.type;
+
+// bit slicing, concatenation
+tmp2 = tmp1[7:0] ++ tmp1[15:8];
+
+// addition, subtraction, casts
+tmp2 = tmp1 + tmp1 - (bit<16>)tmp1[7:0];
+
+// bitwise operators
+tmp2 = (~tmp1 & tmp1) | (tmp1 ^ tmp1);
+tmp2 = tmp1 << 3;
