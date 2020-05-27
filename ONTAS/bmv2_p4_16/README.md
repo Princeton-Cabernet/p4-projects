@@ -24,3 +24,9 @@ This is the ONTAS source code for BMv2. It is implemented with P4-16.
 1. Compare orignal packet trace and the traffic captured in h2. 
     - To see the original packet trace, you can use tcpdump: `tcpdump -r ../smallFlows.pcap -c 5 -nnnne`
      
+## License
+
+Copyright 2019 Hyojoon Kim, Princeton University.
+
+The project's source code are released here under the [Apache License v2]
+(https://www.apache.org/licenses/LICENSE-2.0).
