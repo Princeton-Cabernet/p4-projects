@@ -16,10 +16,10 @@
 //"© AGPLv3"
 
 
-// You should use this program together with the two-round matching rule generator, which does key expansion and lookup-table permutation.
+// You should use this program together with the matching rule generator aes-oneround.py, which does key expansion and lookup-table permutation.
 // To debug in scapy:
-// sendp(Ether()/IP()/UDP(sport=1234,dport=5555)/('A'*16), iface="veth4")
-// sniff(iface="veth4",prn=lambda x:x.show())
+// sendp(Ether()/IP()/UDP(sport=1234,dport=5555)/('A'*16), iface="veth0")
+// sniff(iface="veth0",prn=lambda x:x.show())
 
 #define AES_PORT 5555
 
