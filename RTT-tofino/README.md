@@ -21,7 +21,7 @@ To compile, run `bf-p4c p4src/RTT.p4`.
 Please use `bf-p4c` version 9.1.0 or higher to compile the program. 
 
 ### Citing
-If you find this AES implementation or the discussions in our paper useful, please consider citing:
+If you find this implementation or the discussions in our paper useful, please consider citing:
 
     @article{chen2020rtt,
         title={Measuring TCP Round-Trip Time in the Data Plane},
