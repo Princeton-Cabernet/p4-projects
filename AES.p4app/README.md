@@ -4,6 +4,8 @@ This P4 program implements AES-128 (10 rounds Rinjdael algorithm) using P4. It o
 
 There are 5 different lookup tables each having 256 entries, totalling about 4KB. However, when compiled to target, each table is placed into multiple copies, so it takes about 160KB of table memory.
 
+This implementation works on the BMV2 behavioral model. Please check out [AES-tofino](../AES-tofino/) for an implementation on the Barefoot Tofino programmable switch hardware.
+
 ## Compiling the code
 
 You may use [`p4app`](https://github.com/p4lang/p4app/) to quickly set up envorinment and run P4 code: use the `wire` example (1 switch, 2 hosts example) and replace the P4 program.
