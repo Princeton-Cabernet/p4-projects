@@ -3,7 +3,7 @@
 
 This directory hosts P4 implementation of the AES encryption algorithm running on the Barefoot Tofino programmable switch. 
 
-We used an optimization technique that blends lookup table and adding encryption key, to make the implementation more friendly to the switch hardware. For more details, please refer to our paper: [Implementing AES Encryption on Programmable Switches via Scrambled Lookup Tables](#) (To appear in SIGCOMM'20 SPIN workshop).
+We used an optimization technique that blends lookup table and adding encryption key, to make the implementation more friendly to the switch hardware. For more details, please refer to our paper: [Implementing AES Encryption on Programmable Switches via Scrambled Lookup Tables](https://doi.org/10.1145/3405669.3405819) (To appear in SIGCOMM'20 SPIN workshop).
 
 ### Compiling and running P4 code
 
