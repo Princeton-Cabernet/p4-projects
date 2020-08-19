@@ -321,7 +321,6 @@ control SwitchIngress(
         
         Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_1;
         Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_2;
-        Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_3;
         action compute_eack_1_(){
             ig_md.tmp_1=copy32_1.get({26w0 ++ hdr.ipv4.ihl ++ 2w0});
         }
@@ -329,7 +328,7 @@ control SwitchIngress(
             ig_md.tmp_2=copy32_2.get({26w0 ++ hdr.tcp.data_offset ++ 2w0});
         }
         action compute_eack_3_(){
-            ig_md.tmp_3=copy32_3.get({16w0 ++ hdr.ipv4.total_len});
+            ig_md.tmp_3=16w0 ++ hdr.ipv4.total_len;
         }
         action compute_eack_4_(){
             ig_md.total_hdr_len_bytes=(ig_md.tmp_1+ig_md.tmp_2);
@@ -434,8 +433,7 @@ control SwitchIngress(
                 {
                     value.lo=0;
                     value.hi=0;
-                    rv=in_value.hi;//compiler is buggy, need manual fix in BFA!
-                    //set output to mem_hi instead of alu_hi
+                    rv=in_value.hi;
                 }
             }                                                              
         };
