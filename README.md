@@ -29,6 +29,7 @@ Below is a non-exhaustive list of other repositories hosting open-sourced P4 pro
 ### BMV2
 - [NetCache](https://github.com/netx-repo/netcache-p4): Using P4 switch as cache for key-value store
 - [NetChain](https://github.com/netx-repo/netchain-p4): Using P4 switch for coordination service
+- [NetHCF](https://github.com/NetHCF/NetHCF): Employing programmable switches for spoofed IP traffic filtering
 - [PINT](https://github.com/ProbabilisticINT/Mininet-PINT): Probabilistic In-band Network Telemetry
 - [PRECISION-bmv2](https://github.com/p4lang/p4-applications/tree/master/research_projects/PRECISION): The PRECISION heavy-hitter algorithm on BMV2 switch
 - [QPipe](https://github.com/netx-repo/QPipe/): Quantile sketch in data plane
