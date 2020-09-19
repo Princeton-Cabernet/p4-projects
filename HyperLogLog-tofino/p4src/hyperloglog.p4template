@@ -258,7 +258,7 @@ control HyperLogLog (
             }
             default_action = set_maxzeroes(0);
             const entries = {
-                {% for i in range(SCALING+1) %}
+                {% for i in range(SCALING) %}
                     ({{32-LOG_M}}w{{2**(i)}} &&& {{32-LOG_M}}w{{2**(i+1)-1}}, 1w0&&&1w0): set_maxzeroes({{i+1}});
                 {% endfor %}
             }
@@ -368,6 +368,42 @@ control HyperLogLog (
         action calc_final_inverse(){
             estimate=regact_calc_inverse.execute(0);
         }
+
+        //==Step 6: Linear Counting correction
+        Register<bit<32>,_>(1) reg_nonzero_estimators_count;
+        RegisterAction<bit<32>, _, bit<32>>(reg_nonzero_estimators_count) regact_nonzero_estimators_count = {
+            void apply(inout bit<32> val, out bit<32> rv) {
+                if(hll_meta.shadow_maxzeroes == 0){ //first time an estimator set to nonzero
+                    val = val + 1;
+                }
+                rv = val;
+            }
+        };
+        bit<{{LOG_M+1}}> nonzero_estimators_count;
+        action regexec_nonzero_estimators_count(){
+            nonzero_estimators_count = (bit<{{LOG_M+1}}>) regact_nonzero_estimators_count.execute( 0 );
+        }
+        action lc_correction(bit<32> val){
+            estimate=val;
+        }
+        action lc_keep(){}
+        table tb_linear_counter_correction{
+            key = {
+                nonzero_estimators_count: exact;
+            }
+            size = {{M+1}};
+            actions = {
+                lc_correction;
+                lc_keep;
+            }
+            const entries = {
+                {% for i in range(M) %}
+                    {% set V = M-i %}
+                    ({{i}}): lc_correction( {{ (M * log(M/V)) | int}} );
+                {% endfor %}
+                ({{M}}): lc_keep();
+            }
+        }
     
     apply {
         //stateless: init hash values
@@ -387,6 +423,14 @@ control HyperLogLog (
         regexec_sum_invprob_diff();
         const_offset_sum_invprob();
         calc_final_inverse();
+
+        //bonus: linear counter correction, if estimate < 2.5*M
+        regexec_nonzero_estimators_count();
+        if(estimate[31:{{LOG_M+2}}]==0){
+            if(estimate[{{LOG_M+2 -1}}:0] < {{(2.5*M)|int}}){
+                tb_linear_counter_correction.apply();
+            }
+        }
     }
 }
 

@@ -43,6 +43,7 @@ output = (t.render(
     M=args.M,
     LOG_M=int(math.log2(args.M)),
     SCALING=args.scaling,
+    log=math.log,
     get_seed=get_seed
                   ))
 with open(args.P4_filename, 'w') as f:

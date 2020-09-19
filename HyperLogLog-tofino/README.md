@@ -15,7 +15,7 @@ The P4 program does the following:
 
 We note that HyperLogLog's output is more accurate than the approximated arithmetics in the data plane. Hence, for applications requiring good accuracy, they should work directly with the sum (the geometric mean) before the final inverse operation.
 
-For very small counts, HyperLogLog is not accurate, and Linear Counting should be used instead.
+For very small counts, HyperLogLog is not accurate, and Linear Counting is used instead.
 
 ### Compiling
 
