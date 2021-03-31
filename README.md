@@ -22,6 +22,8 @@ Below is a non-exhaustive list of other repositories hosting open-sourced P4 pro
 - [MicroP4](https://github.com/cornell-netlab/MicroP4): Modularized data-plane programming
 
 ### Tofino P4-14
+- [ATP](https://github.com/in-ATP/ATP): Provide in-network aggregation service to accelerate deep learning training in multi-tenant settings
+- [ATP-SwitchML](https://github.com/in-ATP/switchML): Provide in-network aggregation service to accelerate deep learning training
 - [Cheetah](https://github.com/harvard-cns/cheetah-release): Use Tofino to accelerate Spark queries
 - [Chipmunk](https://github.com/chipmunk-project/chipmunk-tofino): Use program synthesis to generate P4 code
 - [NetLock](https://github.com/netx-repo/NetLock): Using P4 switch for lock management
