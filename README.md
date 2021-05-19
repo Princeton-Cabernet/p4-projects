@@ -28,6 +28,7 @@ Below is a non-exhaustive list of other repositories hosting open-sourced P4 pro
 - [Chipmunk](https://github.com/chipmunk-project/chipmunk-tofino): Use program synthesis to generate P4 code
 - [NetLock](https://github.com/netx-repo/NetLock): Using P4 switch for lock management
 - [Mantis](https://github.com/eniac/Mantis): Generates reactive P4 program and C++ agent
+- [SP-PIFO](https://github.com/nsg-ethz/SP-PIFO): Enabling programmable scheduling in Tofino
 
 ### BMV2
 - [NetCache](https://github.com/netx-repo/netcache-p4): Using P4 switch as cache for key-value store
@@ -38,4 +39,5 @@ Below is a non-exhaustive list of other repositories hosting open-sourced P4 pro
 - [QPipe](https://github.com/netx-repo/QPipe/): Quantile sketch in data plane
 - [Speedlight](https://github.com/eniac/Speedlight): Synchronized Network Snapshots  
 - [Tutorial](https://github.com/p4lang/tutorials):  The official P4 tutorial has many example P4 programs (under the solution folders)
-- [P4-Guide](https://github.com/jafingerhut/p4-guide/blob/master/README-demos.md): More example P4 programs.
+- [P4-Guide](https://github.com/jafingerhut/p4-guide/blob/master/README-demos.md): More example P4 programs
+- [SP-PIFO](https://github.com/nsg-ethz/SP-PIFO): Enabling programmable scheduling in P4 switches
