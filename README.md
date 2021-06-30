@@ -9,6 +9,7 @@ This repository is used to host the open-source P4 implementations of some of ou
 - [ONTAS](ONTAS/): Traffic anonymization on BMV2 / Tofino
 - [PRECISION-tofino](PRECISION-tofino/): The PRECISION heavy-hitter algorithm on Tofino switch
 - [RTT-tofino](RTT-tofino/): TCP Round-Trip Time measurement on Tofino switch
+- [SipHash-tofino](SipHash-tofino/): Secure keyed hash function on Tofino switch
 
 Please refer to individual project sub-folders for open-source licenses.
 
