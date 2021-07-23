@@ -1,6 +1,6 @@
 # Tofino implementation of HalfSipHash
 
-This directory hosts P4 implementation of the HalfSipHash keyed hash function on the Barefoot Tofino programmable switch. For more details, please refer to our paper: [Secure Keyed Hashing on Programmable Switches](https://doi.org/10.1145/3472873.3472881) (To appear in SIGCOMM'20 SPIN workshop).
+This directory hosts P4 implementation of the HalfSipHash keyed hash function on the Barefoot Tofino programmable switch. For more details, please refer to our paper: [Secure Keyed Hashing on Programmable Switches](https://doi.org/10.1145/3472873.3472881) (Published in *SIGCOMM 2021 Workshop on Secure Programmable network INfrastructure (SPIN 2021)*).
 
 ### Compiling and running P4 code
 
@@ -31,7 +31,7 @@ The switch will bounce back a UDP packet with payload 0x`df8f3346` with padding 
 
 
 ### Citing
-If you find this AES implementation or the discussions in our paper useful, please consider citing:
+If you find this HalfSipHash implementation or the discussions in our paper useful, please consider citing:
 
     @article{2021siphash,
         title={Secure Keyed Hashing on Programmable Switches},
