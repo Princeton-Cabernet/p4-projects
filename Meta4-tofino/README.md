@@ -8,7 +8,7 @@ banned_dns_dst.txt list of client IP addresses making DNS requests that we ignor
 
 
 **P4:**<br/>
-netassay_v4_j6.p4: traffic volume measurement version of Meta4<br/>
+netassay_v4_j6.p4: traffic volume measurement version of Meta4 (Note: compiles with SDE v9.2.0) <br/>
 netassay_iot_j6.p4: IoT fingerprinting version of Meta4<br/>
 netassay_tunnel_j7.p4: DNS tunneling detection version of Meta4<br/>
 knownlist_v4_j6.py: used for creating match action rules for netassay_v4_j6.p4<br/>
