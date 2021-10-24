@@ -364,14 +364,12 @@ control SwitchIngress(
 		hdr.udp.dst_port=SIP_PORT+1;
 	}
 
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_output;
 	action do_not_recirc_end_in_ig(){
 		route_to((bit<9>)hdr.sip_meta.dest_port);
 		hdr.udp.dst_port=SIP_PORT;
-		bit<32> hash_output = hdr.sip_meta.v_0 ^ hdr.sip_meta.v_1 ^ hdr.sip_meta.v_2 ^ hdr.sip_meta.v_3;
 		#define ig_writeout_m(i) hdr.sip.m_##i = 0;
 		__LOOP(NUM_WORDS,ig_writeout_m)
-		hdr.sip.m_0=copy32_output.get({hash_output});
+		@in_hash { hdr.sip.m_0=hdr.sip_meta.v_0 ^ hdr.sip_meta.v_1 ^ hdr.sip_meta.v_2 ^ hdr.sip_meta.v_3; }
 		hdr.sip_meta.setInvalid();
 	}
 
@@ -411,15 +409,9 @@ control SwitchIngress(
 		hdr.sip_meta.v_1 = key_1 ^ const_1;
 		hdr.sip_meta.v_2 = key_0 ^ const_2;
 		hdr.sip_meta.v_3 = key_1 ^ const_3;
-	}
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_a_1;
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_a_3;
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_b_0;
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_c_1;
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_c_3;
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_d_2;
+        }
 
-	#define MSG_VAR_IG ig_md.sip_tmp.i_0
+        #define MSG_VAR_IG ig_md.sip_tmp.i_0
 	action sip_1_odd(){
 		//for first SipRound in set of <c> SipRounds
 		//i_3 = i_3 ^ message
@@ -431,12 +423,11 @@ control SwitchIngress(
 		//a_2 = i_2 + i_3
 		ig_md.sip_tmp.a_2 = hdr.sip_meta.v_2 + hdr.sip_meta.v_3;
 		//a_1 = i_1 << 5
-		ig_md.sip_tmp.a_1 = copy32_a_1.get({hdr.sip_meta.v_1[26:0] ++ hdr.sip_meta.v_1[31:27]});
+		@in_hash { ig_md.sip_tmp.a_1 = hdr.sip_meta.v_1[26:0] ++ hdr.sip_meta.v_1[31:27]; }
 	}
 	action sip_1_b(){
 		//a_3 = i_3 << 8
-		ig_md.sip_tmp.a_3 = copy32_a_3.get({hdr.sip_meta.v_3[23:0] ++ hdr.sip_meta.v_3[31:24]});
-
+		ig_md.sip_tmp.a_3 = hdr.sip_meta.v_3[23:0] ++ hdr.sip_meta.v_3[31:24];
 	}
 	action sip_2_a(){
 		//b_1 = a_1 ^ a_0
@@ -444,7 +435,7 @@ control SwitchIngress(
 		//b_3 = a_3 ^ a_2
 		ig_md.sip_tmp.i_3 = ig_md.sip_tmp.a_3 ^ ig_md.sip_tmp.a_2;
 		// b_0 = a_0 << 16
-		ig_md.sip_tmp.i_0 = copy32_b_0.get({ig_md.sip_tmp.a_0[15:0] ++ ig_md.sip_tmp.a_0[31:16]});
+		ig_md.sip_tmp.i_0 = ig_md.sip_tmp.a_0[15:0] ++ ig_md.sip_tmp.a_0[31:16];
 		//b_2 = a_2
 		ig_md.sip_tmp.i_2 = ig_md.sip_tmp.a_2;
 	}
@@ -455,11 +446,11 @@ control SwitchIngress(
 		//c_0 = b_0 + b_3
 		ig_md.sip_tmp.a_0 = ig_md.sip_tmp.i_0 + ig_md.sip_tmp.i_3;
 		//c_1 = b_1 << 13
-		ig_md.sip_tmp.a_1 = copy32_c_1.get({ig_md.sip_tmp.i_1[18:0] ++ ig_md.sip_tmp.i_1[31:19]});
+		@in_hash { ig_md.sip_tmp.a_1 = ig_md.sip_tmp.i_1[18:0] ++ ig_md.sip_tmp.i_1[31:19]; }
 	}
 	action sip_3_b(){
 		//c_3 = b_3 << 7
-		ig_md.sip_tmp.a_3 = copy32_c_3.get({ig_md.sip_tmp.i_3[24:0] ++ ig_md.sip_tmp.i_3[31:25]});
+		@in_hash { ig_md.sip_tmp.a_3 = ig_md.sip_tmp.i_3[24:0] ++ ig_md.sip_tmp.i_3[31:25]; }
 	}
 
 	action sip_4_a(){
@@ -468,7 +459,7 @@ control SwitchIngress(
 		//d_3 = c_3 ^ c_0 i
 		hdr.sip_meta.v_3 = ig_md.sip_tmp.a_3 ^ ig_md.sip_tmp.a_0;
 		//d_2 = c_2 << 16
-		hdr.sip_meta.v_2 = copy32_d_2.get({ig_md.sip_tmp.a_2[15:0] ++ ig_md.sip_tmp.a_2[31:16]});
+		hdr.sip_meta.v_2 = ig_md.sip_tmp.a_2[15:0] ++ ig_md.sip_tmp.a_2[31:16];
 
 	}
 	action sip_4_b_odd(){
@@ -643,13 +634,11 @@ control SwitchEgress(
 	action nop() {
 	}
 
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_output;
 	action final_round_xor(){
 		hdr.udp.dst_port=SIP_PORT;
-		bit<32> hash_output = hdr.sip_meta.v_0 ^ hdr.sip_meta.v_1 ^ hdr.sip_meta.v_2 ^ hdr.sip_meta.v_3;
 		#define eg_writeout_m(i) hdr.sip.m_##i = 0;
 		__LOOP(NUM_WORDS,eg_writeout_m)
-		hdr.sip.m_0=copy32_output.get({hash_output});
+		@in_hash { hdr.sip.m_0 = hdr.sip_meta.v_0 ^ hdr.sip_meta.v_1 ^ hdr.sip_meta.v_2 ^ hdr.sip_meta.v_3; }
 		hdr.sip_meta.setInvalid();
 	}
 
@@ -659,12 +648,6 @@ control SwitchEgress(
 		hdr.sip_meta.v_2 = key_0 ^ const_2;
 		hdr.sip_meta.v_3 = key_1 ^ const_3;
 	}
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_a_1;
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_a_3;
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_b_0;
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_c_1;
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_c_3;
-	Hash<bit<32>>(HashAlgorithm_t.IDENTITY) copy32_d_2;
 
 	#define MSG_VAR_EG eg_md.sip_tmp.i_0
 	action sip_1_odd(){
@@ -678,11 +661,11 @@ control SwitchEgress(
 		//a_2 = i_2 + i_3
 		eg_md.sip_tmp.a_2 = hdr.sip_meta.v_2 + hdr.sip_meta.v_3;
 		//a_1 = i_1 << 5
-		eg_md.sip_tmp.a_1 = copy32_a_1.get({hdr.sip_meta.v_1[26:0] ++ hdr.sip_meta.v_1[31:27]});
+		@in_hash { eg_md.sip_tmp.a_1 = hdr.sip_meta.v_1[26:0] ++ hdr.sip_meta.v_1[31:27]; }
 	}
 	action sip_1_b(){
 		//a_3 = i_3 << 8
-		eg_md.sip_tmp.a_3 = copy32_a_3.get({hdr.sip_meta.v_3[23:0] ++ hdr.sip_meta.v_3[31:24]});
+		eg_md.sip_tmp.a_3 = hdr.sip_meta.v_3[23:0] ++ hdr.sip_meta.v_3[31:24];
 
 	}
 	action sip_2_a(){
@@ -691,7 +674,7 @@ control SwitchEgress(
 		//b_3 = a_3 ^ a_2
 		eg_md.sip_tmp.i_3 = eg_md.sip_tmp.a_3 ^ eg_md.sip_tmp.a_2;
 		// b_0 = a_0 << 16
-		eg_md.sip_tmp.i_0 = copy32_b_0.get({eg_md.sip_tmp.a_0[15:0] ++ eg_md.sip_tmp.a_0[31:16]});
+		eg_md.sip_tmp.i_0 = eg_md.sip_tmp.a_0[15:0] ++ eg_md.sip_tmp.a_0[31:16];
 		//b_2 = a_2
 		eg_md.sip_tmp.i_2 = eg_md.sip_tmp.a_2;
 	}
@@ -702,11 +685,11 @@ control SwitchEgress(
 		//c_0 = b_0 + b_3
 		eg_md.sip_tmp.a_0 = eg_md.sip_tmp.i_0 + eg_md.sip_tmp.i_3;
 		//c_1 = b_1 << 13
-		eg_md.sip_tmp.a_1 = copy32_c_1.get({eg_md.sip_tmp.i_1[18:0] ++ eg_md.sip_tmp.i_1[31:19]});
+		@in_hash { eg_md.sip_tmp.a_1 = eg_md.sip_tmp.i_1[18:0] ++ eg_md.sip_tmp.i_1[31:19]; }
 	}
 	action sip_3_b(){
 		//c_3 = b_3 << 7
-		eg_md.sip_tmp.a_3 = copy32_c_3.get({eg_md.sip_tmp.i_3[24:0] ++ eg_md.sip_tmp.i_3[31:25]});
+		@in_hash { eg_md.sip_tmp.a_3 = eg_md.sip_tmp.i_3[24:0] ++ eg_md.sip_tmp.i_3[31:25]; }
 	}
 
 	action sip_4_a(){
@@ -715,7 +698,7 @@ control SwitchEgress(
 		//d_3 = c_3 ^ c_0 i
 		hdr.sip_meta.v_3 = eg_md.sip_tmp.a_3 ^ eg_md.sip_tmp.a_0;
 		//d_2 = c_2 << 16
-		hdr.sip_meta.v_2 = copy32_d_2.get({eg_md.sip_tmp.a_2[15:0] ++ eg_md.sip_tmp.a_2[31:16]});
+		hdr.sip_meta.v_2 = eg_md.sip_tmp.a_2[15:0] ++ eg_md.sip_tmp.a_2[31:16];
 
 	}
 	action sip_4_b_odd(){
