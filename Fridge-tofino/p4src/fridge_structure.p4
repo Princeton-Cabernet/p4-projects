@@ -60,10 +60,10 @@ control Fridge<T_fid>(in T_fid fid, in bit<32> timestamp, in bool is_insert, out
 		}								  
 	};
 	action exec_ins_ctr_add(){
-	   ins_ctr=ins_ctr_add.execute(0);
+		ins_ctr=ins_ctr_add.execute(0);
 	}
 	action exec_ins_ctr_read(){
-	   ins_ctr=ins_ctr_read.execute(0);
+		ins_ctr=ins_ctr_read.execute(0);
 	}
 
 	// The frirge consists of three arrays: signature(fid), timestamp, insertion counter
@@ -105,7 +105,7 @@ control Fridge<T_fid>(in T_fid fid, in bit<32> timestamp, in bool is_insert, out
 	};
 	RegisterAction<bit<32>, _, bit<32>>(array_timestamp) array_timestamp_readdiff= {  
 		void apply(inout bit<32> value, out bit<32> rv) {	  
-		  rv=timestamp-value;
+			rv=timestamp-value;
 		}								  
 	};
 	action exec_array_timestamp_write(){
@@ -123,7 +123,7 @@ control Fridge<T_fid>(in T_fid fid, in bit<32> timestamp, in bool is_insert, out
 	};
 	RegisterAction<bit<32>, _, bit<32>>(array_insctr) array_insctr_readdiff= {  
 		void apply(inout bit<32> value, out bit<32> rv) {	  
-		  rv=ins_ctr-value;
+			rv=ins_ctr-value;
 		}								  
 	};
 	action exec_array_insctr_write(){
