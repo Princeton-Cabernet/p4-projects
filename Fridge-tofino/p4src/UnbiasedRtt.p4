@@ -29,6 +29,7 @@
 //== Modules
 #include "calc_tcp_eack.p4"
 #include "fridge_structure.p4"
+#include "tally_histogram.p4"
 
 // == Actual control logic
 control SwitchIngress(
@@ -85,7 +86,11 @@ control SwitchEgress(
 		in egress_intrinsic_metadata_from_parser_t eg_intr_md_from_prsr,
 		inout egress_intrinsic_metadata_for_deparser_t ig_intr_dprs_md,
 		inout egress_intrinsic_metadata_for_output_port_t eg_intr_oport_md) {
+	Tally_Histogram() tally_histogram;
 	apply {
+		if(eg_md.fridge_output.query_successful==1){
+			tally_histogram.apply(eg_md.fridge_output);
+		}
 	}
 }
 
