@@ -78,11 +78,13 @@ control SwitchIngressDeparser(
 
 	Digest<fridge_output_t>() digest_fridge_output;
     apply {
+	//send digest if there is a sample
 	//if(ig_intr_dprsr_md.digest_type == 1){
-	if(ig_md.fridge_output.query_successful){
+	if(ig_md.fridge_output.query_successful==1){
 		digest_fridge_output.pack(ig_md.fridge_output);
 	}
-	   
+	//unconditionally bridge the sample to egress
+	pkt.emit(ig_md.fridge_output); 
         pkt.emit(hdr.ethernet);
         pkt.emit(hdr.ipv4);
         pkt.emit(hdr.tcp);
@@ -97,6 +99,7 @@ parser SwitchEgressParser(
         out egress_intrinsic_metadata_t eg_intr_md) {
     state start {
         pkt.extract(eg_intr_md);
+	pkt.extract(eg_md.fridge_output);
         transition accept;
     }
 }

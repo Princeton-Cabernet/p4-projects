@@ -76,8 +76,8 @@ control Fridge<T_fid>(in T_fid fid, in bit<32> timestamp, in bool is_insert, out
 
 	RegisterAction<bit<32>, _, bool>(array_signature) array_signature_write= {  
 		void apply(inout bit<32> value, out bool rv) {	  
-		value=pkt_signature;
-		rv=false;
+			value=pkt_signature;
+			rv=false;
 		}								  
 	};
 	RegisterAction<bit<32>, _, bool>(array_signature) array_signature_compare= {  
@@ -137,13 +137,13 @@ control Fridge<T_fid>(in T_fid fid, in bit<32> timestamp, in bool is_insert, out
 		randomize();
 		calc_signature();
 		calc_hashed_location();
+		fridge_output.query_successful=0;
 		if(is_insert && (entropy==0)){
 			//insert w.p. p=2^-ENTRY_PROB_LOG2
 			exec_ins_ctr_add();	
 			exec_array_signature_write();
 			exec_array_timestamp_write();
 			exec_array_insctr_write();
-			fridge_output={false,0,0};
 		}else{
 			//is query
 			exec_ins_ctr_read();
@@ -151,11 +151,9 @@ control Fridge<T_fid>(in T_fid fid, in bit<32> timestamp, in bool is_insert, out
 			if(array_read_signature_matched){
 				exec_array_timestamp_readdiff();
 				exec_array_insctr_readdiff();
-				fridge_output.query_successful=true;
+				fridge_output.query_successful=1;
 				fridge_output.survival_cnt=array_read_insctrdiff;
 				fridge_output.delay=array_read_tsdiff;
-			}else{
-				fridge_output={false,0,0};
 			}
 		}	
 	}

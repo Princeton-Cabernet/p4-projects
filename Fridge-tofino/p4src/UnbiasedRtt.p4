@@ -19,20 +19,10 @@
 #include <core.p4>
 #include <tna.p4>
 
-//== Metadata variables
-struct fridge_output_t {
-	bool query_successful;
-	bit<32> delay;
-	bit<32> survival_cnt;
-}
-struct ig_metadata_t {
-	fridge_output_t fridge_output;
-}
-struct eg_metadata_t {
-}
-
 //== Headers
 #include "headers.h"
+//== Metadata variables
+#include "metadata.h"
 //== Parsers and Deparsers
 #include "parsers.h"
 
