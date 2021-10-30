@@ -27,11 +27,18 @@ control Fridge<T_fid>(in T_fid fid, in bit<32> timestamp, in bool is_insert, out
 	// Insert fid into fridge, or query if fid exists in fridge
 
 	// Entry probability implementations
+	#if ENTRY_PROB_LOG2==0 //special case: p=1
+	bit<1> entropy;
+	action randomize(){
+		entropy=0;
+	}
+	#else //p!=1
 	Random< bit<ENTRY_PROB_LOG2> >() rng;
 	bit<ENTRY_PROB_LOG2> entropy;
 	action randomize(){
 		entropy=rng.get();
 	}
+	#endif
 
 	// Calculate hash-indexed addreses and 32-bit signature based on fid
 	bit<32> pkt_signature;
