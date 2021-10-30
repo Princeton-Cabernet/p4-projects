@@ -9,13 +9,29 @@ For more detail, please refer to our APoCS'22 paper: [Unbiased Delay Measurement
 
 ### Compiling
 
-Please specify both the number of entries stored in the fridge `REG_SIZE`, and the entry probability `p` (a power of two, by specifing `ENTRY_PROB_LOG2`)
+Please first choose both the number of entries stored in the fridge `REG_SIZE`, and the entry probability `p` (a power of two, by specifing `ENTRY_PROB_LOG2`).
 
-These constants can be defined at compile-time using command line arguments. For example, you can run `bf-p4c -D REG_SIZE=1024 -D ENTRY_PROB_LOG2=4 UnbiasedRtt.p4` to define a fridge with 1024 entries and an entry probability of `p`=1/(2^4)=1/16.
+#### Generate lookup table rules
 
-### Reconstructing the distribution
+Use `py/generate_rules.py` to generate constant lookup table entries for calculating the correction factor. Please place the rules under `p4src/tally_correction_factor_entries.h`.
 
-Note that each report contains both a delay sample and an insertion count `x`. The insertion count can be translated to a survivorship bias correction factor `w=p^-1(1-1/REG_SIZE)^-x`.
+For example, for a fridge with 1024 entries and `p`=1/16 entry probability, run
+```
+python3 py/generate_rules.py 1024 4 > p4src/tally_correction_factor_entries.h
+```
+
+#### Compile the p4 program
+
+The main program is located at `p4src/UnbiasedRtt.p4`. The constant `REG_SIZE` and `ENTRY_PROB_LOG2` must be defined at compile-time using compiler command-line arguments. They must match how `p4src/tally_correction_factor_entries.h` was defined.
+
+For example, for a fridge with 1024 entries and `p`=1/16 entry probability, run
+```
+bf-p4c -D REG_SIZE=1024 -D ENTRY_PROB_LOG2=4 p4src/UnbiasedRtt.p4
+```
+
+### Reconstructing the distribution outside of data plane
+
+The data plame program also sends raw samples of `(delay,x)` tuple to the control plane via digest. Given the insertion counter differential `x`, it can be translated to the survivorship bias correction factor `w=p^-1(1-1/REG_SIZE)^-x`.
 
 The overall delay distribution is the weighted sum of all delay samples, with each sample weighted by `w`. Care should be taken to ensure the correction process uses parameters that match the data-plane program.
 
