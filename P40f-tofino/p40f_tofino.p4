@@ -1044,12 +1044,13 @@ control MyIngressDeparser(packet_out pkt,
                           in metadata meta,
                           in ingress_intrinsic_metadata_for_deparser_t ig_intr_dprsr_md) {
 
-    Mirror() mirror; // mirror constructor
+
+    //Mirror() mirror; // mirror constructor
 
     apply {
-        if (ig_intr_dprsr_md.mirror_type == 3w1) {
-            mirror.emit(MIRROR_SESSION_ID);
-        }
+        //if (ig_intr_dprsr_md.mirror_type == 3w1) {
+        //    mirror.emit(MIRROR_SESSION_ID);
+        //}
 
         pkt.emit(hdr.ethernet);
         pkt.emit(hdr.ipv4);
