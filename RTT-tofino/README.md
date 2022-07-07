@@ -7,7 +7,7 @@ We used register arrays to implement a hash table, with each entry saving a reco
 
 For more details, please refer to our paper: [Measuring TCP Round-Trip Time in the Data Plane](#) (To appear in SIGCOMM'20 SPIN workshop).
 
-This version of the implementation posted here uses a single-stage hash table. We will release one using multi-stage hash table in a future version.
+The current version of the implementation posted here uses a two-stage hash table.
 
 ### Setup
 
