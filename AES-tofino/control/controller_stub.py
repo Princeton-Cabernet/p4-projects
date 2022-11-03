@@ -1,10 +1,12 @@
 import sys
 import os
-sys.path.append(os.path.expandvars('$SDE/install/lib/python2.7/site-packages/tofino/'))
+verstr=str(sys.version_info.major)+'.'+str(sys.version_info.minor)
+sys.path.append(os.path.expandvars('$SDE/install/lib/python'+verstr+'/site-packages/tofino/'))
+sys.path.append(os.path.expandvars('$SDE/install/lib/python'+verstr+'/site-packages/tofino/bfrt_grpc/'))
 
 from bfrt_grpc import client
 
-GRPC_CLIENT=client.ClientInterface(grpc_addr="localhost:50052", client_id=0,device_id=0, is_master=True)
+GRPC_CLIENT=client.ClientInterface(grpc_addr="localhost:50052", client_id=0,device_id=0)
 bfrt_info=GRPC_CLIENT.bfrt_info_get(p4_name=None)
 GRPC_CLIENT.bind_pipeline_config(p4_name=bfrt_info.p4_name)
 
