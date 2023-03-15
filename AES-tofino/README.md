@@ -10,7 +10,7 @@ We used an optimization technique that blends lookup table and adding encryption
 You can compile the P4 code using Barefoot's P4 compiler: `bf-p4c p4src/aes_tworound.p4`. Please use a more recent version of the compiler (e.g., 9.6.0) for faster compilation.
 
 To run the P4 code using tofino-model:
-* `p4-build.sh p4src/aes_tworound.p4`
+* `p4_build.sh p4src/aes_tworound.p4`
 * `$SDE/run_switchd.sh -p aes_tworound`
 * `$SDE/run_tofino_model.sh -p aes_tworound`
 
