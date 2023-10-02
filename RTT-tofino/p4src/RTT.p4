@@ -139,7 +139,7 @@ struct ig_metadata_t {
     bit<16> hashed_location_1;
     bit<16> hashed_location_2;
     
-    bit<32> table_1_read;
+    bit<32> table_read;
 }
 struct eg_metadata_t {
 }
@@ -366,24 +366,42 @@ control SwitchIngress(
         
         // Calculate 16-bit hash table index
                 
-        Hash<bit<16>>(HashAlgorithm_t.CRC16) crc16_1;
-        Hash<bit<16>>(HashAlgorithm_t.CRC16) crc16_2;
+        Hash<bit<16>>(HashAlgorithm_t.CRC16) hash_1s;
+        Hash<bit<16>>(HashAlgorithm_t.CRC16) hash_1a;
+        Hash<bit<16>>(HashAlgorithm_t.CRC32) hash_2s;
+        Hash<bit<16>>(HashAlgorithm_t.CRC32) hash_2a;
         action get_location_SEQ(){
-            ig_md.hashed_location_1=crc16_1.get({
+            ig_md.hashed_location_1=hash_1s.get({
                 4w0,
                 hdr.ipv4.src_addr, hdr.ipv4.dst_addr,
                 hdr.tcp.src_port, hdr.tcp.dst_port,
                 ig_md.expected_ack,
                 4w0
             });
+            ig_md.hashed_location_2=hash_2s.get({
+                2w1,
+                hdr.ipv4.src_addr, hdr.ipv4.dst_addr,
+                2w1,
+                hdr.tcp.src_port, hdr.tcp.dst_port,
+                ig_md.expected_ack,
+                2w1
+            });
         }
         action get_location_ACK(){
-            ig_md.hashed_location_1=crc16_2.get({
+            ig_md.hashed_location_1=hash_1a.get({
                 4w0,
                 hdr.ipv4.dst_addr,hdr.ipv4.src_addr, 
                 hdr.tcp.dst_port,hdr.tcp.src_port, 
                 hdr.tcp.ack_no,
                 4w0
+            });
+            ig_md.hashed_location_2=hash_2a.get({
+                2w1,
+                hdr.ipv4.dst_addr,hdr.ipv4.src_addr, 
+                2w1,
+                hdr.tcp.dst_port,hdr.tcp.src_port, 
+                hdr.tcp.ack_no,
+                2w1
             });
         }
         
@@ -396,8 +414,13 @@ control SwitchIngress(
         
         
         Register<paired_32bit,_>(32w65536) reg_table_1;
+        Register<paired_32bit,_>(32w65536) reg_table_2;
         //lo:signature, hi:timestamp
-        
+        #define current_entry_matched (in_value.lo==ig_md.pkt_signature)
+        #define timestamp_legitimate  ((TIMESTAMP-in_value.hi)<TS_LEGITIMATE_THRESHOLD)
+
+
+        //actions for 1st table
         RegisterAction<paired_32bit, _, bit<32>>(reg_table_1) table_1_insert= {  
             void apply(inout paired_32bit value, out bit<32> rv) {          
                 rv = 0;                                                    
@@ -415,9 +438,8 @@ control SwitchIngress(
                 }
             }                                                              
         };
-        
         action exec_table_1_insert(){
-            ig_md.table_1_read=table_1_insert.execute(ig_md.hashed_location_1);
+            ig_md.table_read=table_1_insert.execute(ig_md.hashed_location_1);
         }
         
         RegisterAction<paired_32bit, _, bit<32>>(reg_table_1) table_1_tryRead= {  
@@ -425,9 +447,6 @@ control SwitchIngress(
                 rv=0;
                 paired_32bit in_value;                                          
                 in_value = value;     
-                
-                #define current_entry_matched (in_value.lo==ig_md.pkt_signature)
-                #define timestamp_legitimate  ((TIMESTAMP-in_value.hi)<TS_LEGITIMATE_THRESHOLD)
                 
                 if(current_entry_matched && timestamp_legitimate)
                 {
@@ -437,11 +456,51 @@ control SwitchIngress(
                 }
             }                                                              
         };
-        
         action exec_table_1_tryRead(){
-            ig_md.table_1_read=table_1_tryRead.execute(ig_md.hashed_location_1);
+            ig_md.table_read=table_1_tryRead.execute(ig_md.hashed_location_1);
+        }
+
+        //actions for 2nd table
+        RegisterAction<paired_32bit, _, bit<32>>(reg_table_2) table_2_insert= {  
+            void apply(inout paired_32bit value, out bit<32> rv) {          
+                rv = 0;
+                paired_32bit in_value;
+                in_value = value;
+                
+                bool existing_timestamp_is_old = (TIMESTAMP-in_value.hi)>TS_EXPIRE_THRESHOLD;
+                bool current_entry_empty = in_value.lo==0;
+                
+                if(existing_timestamp_is_old || current_entry_empty)
+                {
+                    value.lo=ig_md.pkt_signature;
+                    value.hi=TIMESTAMP;
+                    rv=1;
+                }
+            }
+        };
+        action exec_table_2_insert(){
+            ig_md.table_read=table_2_insert.execute(ig_md.hashed_location_2);
         }
         
+        RegisterAction<paired_32bit, _, bit<32>>(reg_table_2) table_2_tryRead= {  
+            void apply(inout paired_32bit value, out bit<32> rv) {    
+                rv=0;
+                paired_32bit in_value;
+                in_value = value;
+                
+                if(current_entry_matched && timestamp_legitimate)
+                {
+                    value.lo=0;
+                    value.hi=0;
+                    rv=in_value.hi;
+                }
+            }
+        };
+        action exec_table_2_tryRead(){
+            ig_md.table_read=table_2_tryRead.execute(ig_md.hashed_location_2);
+        }
+
+
         // Send output report as a UDP packet
         
         action prepare_report(){
@@ -500,8 +559,14 @@ control SwitchIngress(
             // Insert or Read from hash table
             if(ig_md.pkt_type==PKT_TYPE_SEQ){
                 exec_table_1_insert();
+                if(ig_md.table_read==0){ //insert failed at table 1
+                    exec_table_2_insert();
+                }
             }else{
                 exec_table_1_tryRead();
+                if(ig_md.table_read==0){ //read failed at table 1
+                    exec_table_2_tryRead();
+                }
             }
             // To add multiple stage of hash tables:
             // syn: insert into table 2 if insertion failed in 1
@@ -510,14 +575,14 @@ control SwitchIngress(
             
             // send out report headers.
              if(ig_md.pkt_type==PKT_TYPE_SEQ){
-                hdr.report.payload_1=ig_md.table_1_read;
+                hdr.report.payload_1=ig_md.table_read;
                 hdr.ethernet.src_addr=0x1;
             }else{
-                if(ig_md.table_1_read==0){
+                if(ig_md.table_read==0){
                     hdr.ethernet.src_addr=0x2;
                     hdr.report.payload_1=0;
                 }else{
-                    hdr.report.payload_1=(TIMESTAMP-ig_md.table_1_read);
+                    hdr.report.payload_1=(TIMESTAMP-ig_md.table_read);
                     hdr.ethernet.src_addr=0x3;
                 }
             }

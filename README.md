@@ -9,7 +9,9 @@ This repository is used to host the open-source P4 implementations of some of ou
 - [ONTAS](ONTAS/): Traffic anonymization on BMV2 / Tofino
 - [PRECISION-tofino](PRECISION-tofino/): The PRECISION heavy-hitter algorithm on Tofino switch
 - [RTT-tofino](RTT-tofino/): TCP Round-Trip Time measurement on Tofino switch
+- [SipHash-tofino](SipHash-tofino/): Secure keyed hash function on Tofino switch
 - [SmartCookie](SmartCookie/): Split-Proxy SYN flooding defense on Tofino switch + eBPF 
+- [Meta4-tofino](Meta4-tofino/): Analyzing Internet Traffic by Domain Name on Tofino switch 
 
 Please refer to individual project sub-folders for open-source licenses.
 
@@ -21,6 +23,7 @@ Below is a non-exhaustive list of other repositories hosting open-sourced P4 pro
 ### Tofino P4-16
 - [BeauCoup](https://github.com/Princeton-Cabernet/BeauCoup): Run multiple distinct-counting queries on Tofino
 - [MicroP4](https://github.com/cornell-netlab/MicroP4): Modularized data-plane programming
+- [ACC-Turbo](https://github.com/nsg-ethz/ACC-Turbo/tree/main/tofino): Online packet clustering on Tofino for DDoS mitigation
 
 ### Tofino P4-14
 - [ATP](https://github.com/in-ATP/ATP): Provide in-network aggregation service to accelerate deep learning training in multi-tenant settings
@@ -29,6 +32,7 @@ Below is a non-exhaustive list of other repositories hosting open-sourced P4 pro
 - [Chipmunk](https://github.com/chipmunk-project/chipmunk-tofino): Use program synthesis to generate P4 code
 - [NetLock](https://github.com/netx-repo/NetLock): Using P4 switch for lock management
 - [Mantis](https://github.com/eniac/Mantis): Generates reactive P4 program and C++ agent
+- [SP-PIFO](https://github.com/nsg-ethz/SP-PIFO): Enabling programmable scheduling in Tofino
 
 ### BMV2
 - [NetCache](https://github.com/netx-repo/netcache-p4): Using P4 switch as cache for key-value store
@@ -39,4 +43,5 @@ Below is a non-exhaustive list of other repositories hosting open-sourced P4 pro
 - [QPipe](https://github.com/netx-repo/QPipe/): Quantile sketch in data plane
 - [Speedlight](https://github.com/eniac/Speedlight): Synchronized Network Snapshots  
 - [Tutorial](https://github.com/p4lang/tutorials):  The official P4 tutorial has many example P4 programs (under the solution folders)
-- [P4-Guide](https://github.com/jafingerhut/p4-guide/blob/master/README-demos.md): More example P4 programs.
+- [P4-Guide](https://github.com/jafingerhut/p4-guide/blob/master/README-demos.md): More example P4 programs
+- [SP-PIFO](https://github.com/nsg-ethz/SP-PIFO): Enabling programmable scheduling in P4 switches

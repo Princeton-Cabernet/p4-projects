@@ -1,0 +1,10 @@
+// Redirect all packets given OS label s:unix:Linux:2.4.x to IP address 
+// 10.0.1.2
+// s:unix:Linux:2.4.x -> redirect 10.0.1.2
+
+// Drop packets that have been labeled with class "other" and name "Nintendo"
+// e.g.: OS label s:other:Nintendo:Wii
+// other:Nintendo -> drop_pkt
+
+// Drop packets from all IPs that have ever been labeled with class "!"
+// ! -> drop_ip

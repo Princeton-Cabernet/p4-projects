@@ -3,14 +3,14 @@
 
 This directory hosts P4 implementation of the AES encryption algorithm running on the Barefoot Tofino programmable switch. 
 
-We used an optimization technique that blends lookup table and adding encryption key, to make the implementation more friendly to the switch hardware. For more details, please refer to our paper: [Implementing AES Encryption on Programmable Switches via Scrambled Lookup Tables](https://doi.org/10.1145/3405669.3405819) (To appear in SIGCOMM'20 SPIN workshop).
+We used an optimization technique that blends lookup table and adding encryption key, to make the implementation more friendly to the switch hardware. For more details, please refer to our paper: [Implementing AES Encryption on Programmable Switches via Scrambled Lookup Tables](https://doi.org/10.1145/3405669.3405819) (Published in *SIGCOMM 2020 Workshop on Secure Programmable network INfrastructure (SPIN 2020)*).
 
 ### Compiling and running P4 code
 
-You can compile the P4 code using Barefoot's P4 compiler: `bf-p4c p4src/aes_tworound.p4`. Please be patient! 
+You can compile the P4 code using Barefoot's P4 compiler: `bf-p4c p4src/aes_tworound.p4`. Please use a more recent version of the compiler (e.g., 9.6.0) for faster compilation.
 
 To run the P4 code using tofino-model:
-* `p4-build.sh p4src/aes_tworound.p4`
+* `p4_build.sh p4src/aes_tworound.p4`
 * `$SDE/run_switchd.sh -p aes_tworound`
 * `$SDE/run_tofino_model.sh -p aes_tworound`
 
