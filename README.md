@@ -10,6 +10,7 @@ This repository is used to host the open-source P4 implementations of some of ou
 - [PRECISION-tofino](PRECISION-tofino/): The PRECISION heavy-hitter algorithm on Tofino switch
 - [RTT-tofino](RTT-tofino/): TCP Round-Trip Time measurement on Tofino switch
 - [SipHash-tofino](SipHash-tofino/): Secure keyed hash function on Tofino switch
+- [SmartCookie](SmartCookie/): Split-Proxy SYN flooding defense on Tofino switch + eBPF 
 - [Meta4-tofino](Meta4-tofino/): Analyzing Internet Traffic by Domain Name on Tofino switch 
 
 Please refer to individual project sub-folders for open-source licenses.
