@@ -24,6 +24,7 @@ Below is a non-exhaustive list of other repositories hosting open-sourced P4 pro
 - [BeauCoup](https://github.com/Princeton-Cabernet/BeauCoup): Run multiple distinct-counting queries on Tofino
 - [MicroP4](https://github.com/cornell-netlab/MicroP4): Modularized data-plane programming
 - [ACC-Turbo](https://github.com/nsg-ethz/ACC-Turbo/tree/main/tofino): Online packet clustering on Tofino for DDoS mitigation
+- [IMap](https://github.com/IMapScanner/IMap): A fast and scalable in-network scanner on Tofino
 
 ### Tofino P4-14
 - [ATP](https://github.com/in-ATP/ATP): Provide in-network aggregation service to accelerate deep learning training in multi-tenant settings
