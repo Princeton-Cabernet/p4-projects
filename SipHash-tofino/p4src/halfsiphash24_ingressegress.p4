@@ -1,6 +1,6 @@
 // vim: syntax=P4
 /*
-    HalfSipHash-2-4 Ingress-only
+    HalfSipHash-2-4 Ingress+Egress
 
     Copyright (C) 2021 Sophia Yoo & Xiaoqi Chen, Princeton University
     sophiayoo [at] princeton.edu
