@@ -23,12 +23,15 @@ We note that the key is only used at the beginning of the hash calculation to in
 
 When receiving a UDP packet with destination port 5555 and a payload  of `4*NUM_WORDS` bytes, the P4 program calculates the payload's HalfSipHash-2-4 value and output it as the first 4 bytes of the payload, erasing other bytes.
 
-You can run the following command in Scapy to send a test packet, with payload 0x`00112233445566778899aabbccddeeff`:
-`sendp(Ether()/IP()/UDP(sport=1234,dport=5555)/("\x00\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff"), iface="veth0")`
+You can run the following command in Scapy to send a test packet, with payload 0x`000102030405060708090a0b0c0d0e0f`:
+`sendp(Ether()/IP()/UDP(sport=1234,dport=5555)/("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f"), iface="veth0")`
 
-The switch will bounce back a UDP packet with payload 0x`df8f3346` with padding zeros to the same port. You can examine the output by running the following command in Scapy:
+The switch will bounce back a UDP packet with the hash value and padding zeros to the same port. You can examine the output by running the following command in Scapy:
 `sniff(iface="veth0",count=2)`
 
+### Block and padding
+
+The HalfSipHash calculation requires splitting input bytes into 32-bit (4-byte) words. For variable-length inputs, you must adjust the number of rounds based on input length, and add *padding* correctly to the last block, to prevent Length Extension attack. At the end of input bytes, you need to appends a byte encoding the message length modulo 256, and fill null bytes to the end of last word.
 
 ### Citing
 If you find this HalfSipHash implementation or the discussions in our paper useful, please consider citing:

@@ -30,10 +30,10 @@
 #define SIP_PORT 5555
 #define SIP_KEY_0 0x33323130
 #define SIP_KEY_1 0x42413938
-const bit<32> const_0 = 0x70736575;
-const bit<32> const_1 = 0x6e646f6d;
-const bit<32> const_2 = 0x6e657261;
-const bit<32> const_3 = 0x79746573;
+const bit<32> const_0 = 0;
+const bit<32> const_1 = 0;
+const bit<32> const_2 = 0x6c796765;
+const bit<32> const_3 = 0x74656462;
 
 #define ROUND_TYPE_COMPRESSION 0
 #define ROUND_TYPE_FINALIZATION 1
@@ -369,7 +369,7 @@ control SwitchIngress(
 		hdr.udp.dst_port=SIP_PORT;
 		#define ig_writeout_m(i) hdr.sip.m_##i = 0;
 		__LOOP(NUM_WORDS,ig_writeout_m)
-		@in_hash { hdr.sip.m_0=hdr.sip_meta.v_0 ^ hdr.sip_meta.v_1 ^ hdr.sip_meta.v_2 ^ hdr.sip_meta.v_3; }
+		@in_hash { hdr.sip.m_0 = hdr.sip_meta.v_1 ^ hdr.sip_meta.v_3; }
 		hdr.sip_meta.setInvalid();
 	}
 
@@ -638,7 +638,7 @@ control SwitchEgress(
 		hdr.udp.dst_port=SIP_PORT;
 		#define eg_writeout_m(i) hdr.sip.m_##i = 0;
 		__LOOP(NUM_WORDS,eg_writeout_m)
-		@in_hash { hdr.sip.m_0 = hdr.sip_meta.v_0 ^ hdr.sip_meta.v_1 ^ hdr.sip_meta.v_2 ^ hdr.sip_meta.v_3; }
+		@in_hash { hdr.sip.m_0 = hdr.sip_meta.v_1 ^ hdr.sip_meta.v_3; }
 		hdr.sip_meta.setInvalid();
 	}
 
